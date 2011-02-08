@@ -1,0 +1,8 @@
+Changelog
+=========
+
+0.5 (Unreleased)
+----------------
+
+    * First release, moved demo pages out of the main package, as recommended by
+      Laurence Rowe
