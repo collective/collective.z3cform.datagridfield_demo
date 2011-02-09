@@ -144,6 +144,9 @@ class EditForm(form.EditForm):
         """Bypass the baseclass editform - it causes problems"""
         super(form.EditForm, self).updateActions()
 
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        self.widgets['address'].allow_reorder = True
 
 class EditForm2(EditForm):
     label = u'Hide the Row Manipulators (Objects)'
