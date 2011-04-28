@@ -16,19 +16,29 @@ from plone.directives import form
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 
+#from z3c.relationfield.schema import RelationChoice
+#from plone.formwidget.contenttree import ObjPathSourceBinder
+
 
 class IAddress(Interface):
     address_type = schema.Choice(
-        title = u'Address Type', required=True,
+        title=u'Address Type', required=True,
         values=[u'Work', u'Home'])
+    # A Relation field within a datagrid is a tricky one to get
+    # working.  Uncomment if you want to try this.
+    # link = RelationChoice(
+    #         title=u"Link to content",
+    #         source=ObjPathSourceBinder(),
+    #         required=True)
     line1 = schema.TextLine(
-        title = u'Line 1', required=True)
+        title=u'Line 1', required=True)
     line2 = schema.TextLine(
-        title = u'Line 2', required=False)
+        title=u'Line 2', required=False)
     city = schema.TextLine(
-        title = u'City / Town', required=True)
+        title=u'City / Town', required=True)
     country = schema.TextLine(
-        title = u'Country', required=True)
+        title=u'Country', required=True)
+
 
 # Note: when using a dict, it is still an object - A schema.Dict would be
 #       expected to contain some schemas. We are using an object implemented
@@ -54,6 +64,7 @@ TESTDATA = {
             'city': 'Burbs',
             'country': 'The Old Sod'}
     ]}
+
 
 class EditForm(form.EditForm):
     label = u'Simple Form'
@@ -100,6 +111,7 @@ class EditForm2(EditForm):
         self.widgets['address'].allow_insert = False
         self.widgets['address'].allow_delete = False
 
+
 class EditForm3(EditForm):
     label = u'Disable Auto-append'
 
@@ -111,6 +123,7 @@ class EditForm3(EditForm):
         super(EditForm3, self).updateWidgets()
         self.widgets['address'].auto_append = False
 
+
 class EditForm4(EditForm):
     label = u'Omit a column'
 
@@ -120,10 +133,13 @@ class EditForm4(EditForm):
 
     def updateWidgets(self):
         super(EditForm4, self).updateWidgets()
-        self.widgets['address'].columns = [c for c in self.widgets['address'].columns if c['name'] != 'country']
+        self.widgets['address'].columns = [
+            c for c in self.widgets['address'].columns
+            if c['name'] != 'country']
 
     def datagridInitialise(self, subform, widget):
         subform.fields = subform.fields.omit('country')
+
 
 class EditForm5(EditForm):
     label = u'Configure Subform Widgets'
@@ -135,6 +151,7 @@ class EditForm5(EditForm):
         widgets['line2'].size = 40
         widgets['city'].size = 20
         widgets['country'].size = 10
+
 
 class EditForm6(EditForm):
     label = u'Hide a Column'
@@ -148,7 +165,8 @@ class EditForm6(EditForm):
     def updateWidgets(self):
         # This one hides the column title
         super(EditForm6, self).updateWidgets()
-        self.widgets['address'].columns[3]['mode']  = HIDDEN_MODE
+        self.widgets['address'].columns[3]['mode'] = HIDDEN_MODE
+
 
 class EditForm7(EditForm):
     label = u'Table is read-only, cells editable'
@@ -158,6 +176,7 @@ class EditForm7(EditForm):
     def updateWidgets(self):
         super(EditForm7, self).updateWidgets()
         self.widgets['address'].mode = DISPLAY_MODE
+
 
 class EditForm8(EditForm):
     label = u'Table and cells are read-only'
@@ -170,5 +189,3 @@ class EditForm8(EditForm):
         for row in self.widgets['address'].widgets:
             for widget in row.subform.widgets.values():
                 widget.mode = DISPLAY_MODE
-
-
