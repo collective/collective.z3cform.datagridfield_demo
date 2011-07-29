@@ -26,6 +26,8 @@ setup(name='collective.z3cform.datagridfield_demo',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'five.grok',
+          'plone.directives.form',
           'plone.app.z3cform',
           'collective.z3cform.datagridfield',
       ],

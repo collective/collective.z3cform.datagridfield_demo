@@ -4,6 +4,9 @@ Changelog
 0.6 (Unreleased)
 ----------------
 
+    * Added additional dependencies as this package depends on five.grok
+      and plone.directives.form.
+      [davidjb]
     * Move row up / down
 
 0.5 (2011-02-08)
