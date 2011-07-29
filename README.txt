@@ -7,12 +7,12 @@ package for more information.
 Installation
 ------------
 
-Add collective.z3cforms.datagridfield_demo to your buildout eggs.::
+Add collective.z3cform.datagridfield_demo to your buildout eggs.::
 
     eggs=\
         ...
-        collective.z3cforms.datagridfield
-        collective.z3cforms.datagridfield_demo
+        collective.z3cform.datagridfield
+        collective.z3cform.datagridfield_demo
 
 Examples of configurations are in the demo folder.
 Once you install this package, the demo views will be visible on your site. ::

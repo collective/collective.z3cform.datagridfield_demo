@@ -4,6 +4,8 @@ Changelog
 0.6 (Unreleased)
 ----------------
 
+    * Correct typos in readme
+    [davidjb]
     * Added additional dependencies as this package depends on five.grok
       and plone.directives.form.
       [davidjb]
