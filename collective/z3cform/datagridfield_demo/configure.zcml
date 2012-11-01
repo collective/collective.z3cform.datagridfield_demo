@@ -5,10 +5,11 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:z3c="http://namespaces.zope.org/z3c"
-    i18n_domain="collective.z3cform.datagridfield">
+    i18n_domain="collective.z3cform.datagridfield_demo">
 
     <!-- Include configuration for dependencies listed in setup.py -->
     <includeDependencies package="." />
+
     <!-- Grok the package to initialise schema interfaces and content classes -->
     <grok:grok package="." />
 

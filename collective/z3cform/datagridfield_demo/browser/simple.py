@@ -15,6 +15,7 @@ from plone.directives import form
 
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
+from collective.z3cform.datagridfield import BlockDataGridFieldFactory
 
 #from z3c.relationfield.schema import RelationChoice
 #from plone.formwidget.contenttree import ObjPathSourceBinder
@@ -189,3 +190,19 @@ class EditForm8(EditForm):
         for row in self.widgets['address'].widgets:
             for widget in row.subform.widgets.values():
                 widget.mode = DISPLAY_MODE
+
+
+class EditForm9(EditForm):
+
+    label = u'Block widgets as blocks instead of cells'
+
+    # Because we modify fields in-place in update()
+    # We need our own copy so that we don't damage other forms
+    fields = field.Fields(IPerson)
+
+    grok.name('demo-collective.z3cform.datagrid-block-edit')
+
+    def update(self):
+        # Set a custom widget for a field for this form instance only
+        self.fields['address'].widgetFactory = BlockDataGridFieldFactory
+        super(EditForm9, self).update()
