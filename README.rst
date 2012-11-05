@@ -24,6 +24,13 @@ the demo views will be visible on your site.
 
 * http://localhost:8080/Plone/@@demo-collective.z3cform.datagrid
 
+This page has links of several examples of different DGF use cases.
+
+Sample output
+---------------
+
+Run Plone on foreground mode to see debug prints what kind of data the demo forms submit.
+
 Source code and issue tracker
 -------------------------------
 

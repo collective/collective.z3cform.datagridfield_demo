@@ -79,6 +79,20 @@ class EditForm(form.EditForm):
     def getContent(self):
         return TESTDATA
 
+    def dumpOutput(self, data):
+        """
+        Helper function to see what kind of data DGF submits.
+        """
+        address = data.get("address", [])
+
+        print "Dumping out extracted addresses"
+        for entry in address:
+            print entry
+
+        print "Dumping out raw HTTP POST form data"
+        for k, v in self.request.form.items():
+            print "%s: %s" % (k, v)
+
     @button.buttonAndHandler(u'Save', name='save')
     def handleSave(self, action):
 
@@ -86,6 +100,8 @@ class EditForm(form.EditForm):
         if errors:
             self.status = self.formErrorsMessage
             return
+
+        self.dumpOutput(data)
 
         context = self.getContent()
         for k, v in data.items():
@@ -206,3 +222,4 @@ class EditForm9(EditForm):
         # Set a custom widget for a field for this form instance only
         self.fields['address'].widgetFactory = BlockDataGridFieldFactory
         super(EditForm9, self).update()
+
