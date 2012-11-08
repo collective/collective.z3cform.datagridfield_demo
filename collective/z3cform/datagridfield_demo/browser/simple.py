@@ -4,6 +4,7 @@
     I haven't gotten these views working with tests.
 """
 from five import grok
+from datetime import datetime
 
 from zope.interface import Interface
 from zope import schema
@@ -20,8 +21,26 @@ from collective.z3cform.datagridfield import BlockDataGridFieldFactory
 #from z3c.relationfield.schema import RelationChoice
 #from plone.formwidget.contenttree import ObjPathSourceBinder
 
+import z3c.form
+import zope.schema
+import zope.interface
+import zope.component
+from collective.z3cform.datetimewidget import widget_datetime
 
-class IAddress(Interface):
+
+class DataGridFieldDatetimeWidget(widget_datetime.DatetimeWidget):
+    # Causes grey hair because of invalid value handling
+    # so we disable this for now
+    show_jquerytools_dateinput = False
+
+
+def DataGridFieldDatetimeFieldWidget(field, request):
+    """IFieldWidget factory for DatetimeWidget."""
+    return z3c.form.widget.FieldWidget(field, DataGridFieldDatetimeWidget(request))
+
+
+
+class IAddress(form.Schema):
     address_type = schema.Choice(
         title=u'Address Type', required=True,
         values=[u'Work', u'Home'])
@@ -40,12 +59,20 @@ class IAddress(Interface):
     country = schema.TextLine(
         title=u'Country', required=True)
 
+    # A sample integer field
+    personCount = schema.Int(title=u'Persons', required=False, min=0, max=15)
 
-# Note: when using a dict, it is still an object - A schema.Dict would be
-#       expected to contain some schemas. We are using an object implemented
-#       as a dict
+    # A sample datetime field
+    form.widget(dateAdded=DataGridFieldDatetimeFieldWidget)
+    dateAdded = schema.Datetime(title=u"Date added")
+
 
 class IPerson(Interface):
+    """
+    Note: when using a dict, it is still an object - A schema.Dict would be
+    expected to contain some schemas. We are using an object implemented
+    as a dict
+    """
     name = schema.TextLine(title=u'Name', required=True)
     address = schema.List(title=u'Addresses',
         value_type=DictRow(title=u'Address', schema=IAddress),
@@ -58,12 +85,18 @@ TESTDATA = {
             'line1': 'My Office',
             'line2': 'Big Office Block',
             'city': 'Mega City',
-            'country': 'The Old Sod'},
+            'country': 'The Old Sod',
+            'personCount': 2,
+            'dateAdded': datetime(1981, 8, 17, 06, 00, 00)
+            },
            {'address_type': 'Home',
             'line1': 'Home Sweet Home',
             'line2': 'Easy Street',
             'city': 'Burbs',
-            'country': 'The Old Sod'}
+            'country': 'The Old Sod',
+            'personCount': 4,
+            'dateAdded': datetime(1981, 8, 17, 06, 00, 00)
+            }
     ]}
 
 
