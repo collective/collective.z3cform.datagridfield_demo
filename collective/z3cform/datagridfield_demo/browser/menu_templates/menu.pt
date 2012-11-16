@@ -27,6 +27,11 @@
             <li>
                 <a href="@@demo-collective.z3cform.datagrid-read-only2"> Table and cells are read-only </a>
             </li>
+
+            <li>
+                <a href="@@demo-collective.z3cform.datagrid-block-edit">Block edit mode</a>
+            </li>
+
         </ul>
     </td>
     <td>
