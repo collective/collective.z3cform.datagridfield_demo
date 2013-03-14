@@ -39,7 +39,6 @@ def DataGridFieldDatetimeFieldWidget(field, request):
     return z3c.form.widget.FieldWidget(field, DataGridFieldDatetimeWidget(request))
 
 
-
 class IAddress(form.Schema):
     address_type = schema.Choice(
         title=u'Address Type', required=True,
@@ -65,6 +64,9 @@ class IAddress(form.Schema):
     # A sample datetime field
     form.widget(dateAdded=DataGridFieldDatetimeFieldWidget)
     dateAdded = schema.Datetime(title=u"Date added")
+
+    # A sample checkbox
+    billed = schema.Bool(title=u"Billed")
 
 
 class IPerson(Interface):
