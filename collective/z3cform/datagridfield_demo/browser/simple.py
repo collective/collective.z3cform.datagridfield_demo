@@ -25,18 +25,22 @@ import z3c.form
 import zope.schema
 import zope.interface
 import zope.component
-from collective.z3cform.datetimewidget import widget_datetime
+try:
+    from collective.z3cform.datetimewidget import widget_datetime
+except:
+    widget_datetime = None
+
+if widget_datetime is not None:
+
+    class DataGridFieldDatetimeWidget(widget_datetime.DatetimeWidget):
+        # Causes grey hair because of invalid value handling
+        # so we disable this for now
+        show_jquerytools_dateinput = False
 
 
-class DataGridFieldDatetimeWidget(widget_datetime.DatetimeWidget):
-    # Causes grey hair because of invalid value handling
-    # so we disable this for now
-    show_jquerytools_dateinput = False
-
-
-def DataGridFieldDatetimeFieldWidget(field, request):
-    """IFieldWidget factory for DatetimeWidget."""
-    return z3c.form.widget.FieldWidget(field, DataGridFieldDatetimeWidget(request))
+    def DataGridFieldDatetimeFieldWidget(field, request):
+        """IFieldWidget factory for DatetimeWidget."""
+        return z3c.form.widget.FieldWidget(field, DataGridFieldDatetimeWidget(request))
 
 
 class IAddress(form.Schema):
@@ -62,7 +66,8 @@ class IAddress(form.Schema):
     personCount = schema.Int(title=u'Persons', required=False, min=0, max=15)
 
     # A sample datetime field
-    form.widget(dateAdded=DataGridFieldDatetimeFieldWidget)
+    if widget_datetime  is not None:
+        form.widget(dateAdded=DataGridFieldDatetimeFieldWidget)
     dateAdded = schema.Datetime(title=u"Date added")
 
     # A sample checkbox
