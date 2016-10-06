@@ -61,6 +61,8 @@ class IAddress(form.Schema):
         title=u'City / Town', required=True)
     country = schema.TextLine(
         title=u'Country', required=True)
+    frozenField = schema.TextLine(
+        title=u'Don\'t change', readonly=True, required=True)
 
     # A sample integer field
     personCount = schema.Int(title=u'Persons', required=False, min=0, max=15)
