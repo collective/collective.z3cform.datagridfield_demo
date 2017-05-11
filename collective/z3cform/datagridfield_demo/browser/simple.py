@@ -18,13 +18,7 @@ from zope import schema
 from zope.interface import Interface
 
 import z3c.form
-import zope.component
-import zope.interface
-import zope.schema
 
-
-#from z3c.relationfield.schema import RelationChoice
-#from plone.formwidget.contenttree import ObjPathSourceBinder
 
 try:
     from collective.z3cform.datetimewidget import widget_datetime
@@ -69,7 +63,7 @@ class IAddress(form.Schema):
     personCount = schema.Int(title=u'Persons', required=False, min=0, max=15)
 
     # A sample datetime field
-    if widget_datetime  is not None:
+    if widget_datetime is not None:
         form.widget(dateAdded=DataGridFieldDatetimeFieldWidget)
     dateAdded = schema.Datetime(title=u"Date added")
 
@@ -84,9 +78,12 @@ class IPerson(Interface):
     as a dict
     """
     name = schema.TextLine(title=u'Name', required=True)
-    address = schema.List(title=u'Addresses',
+    address = schema.List(
+        title=u'Addresses',
         value_type=DictRow(title=u'Address', schema=IAddress),
-        required=True)
+        required=True
+    )
+
 
 TESTDATA = {
     'name': 'MY NAME',

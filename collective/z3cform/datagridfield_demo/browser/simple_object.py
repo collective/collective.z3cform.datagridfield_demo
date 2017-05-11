@@ -24,27 +24,41 @@ from zope.schema.fieldproperty import FieldProperty
 
 class IAddress(Interface):
     address_type = schema.Choice(
-        title = u'Address Type', required=True,
-        values=[u'Work', u'Home'])
+        title=u'Address Type', required=True,
+        values=[u'Work', u'Home']
+    )
     line1 = schema.TextLine(
-        title = u'Line 1', required=True)
+        title=u'Line 1',
+        required=True
+    )
     line2 = schema.TextLine(
-        title = u'Line 2', required=False)
+        title=u'Line 2',
+        required=False
+    )
     city = schema.TextLine(
-        title = u'City / Town', required=True)
+        title=u'City / Town',
+        required=True
+    )
     country = schema.TextLine(
-        title = u'Country', required=True)
+        title=u'Country',
+        required=True
+    )
+
 
 class AddressListField(schema.List):
     """We need to have a unique class for the field list so that we
     can apply a custom adapter."""
     pass
 
+
 class IPerson(Interface):
     name = schema.TextLine(title=u'Name', required=True)
-    address = AddressListField(title=u'Addresses',
+    address = AddressListField(
+        title=u'Addresses',
         value_type=schema.Object(title=u'Address', schema=IAddress),
-        required=True)
+        required=True
+    )
+
 
 class Address(object):
     implements(IAddress)
@@ -54,15 +68,18 @@ class Address(object):
     city = FieldProperty(IAddress['city'])
     country = FieldProperty(IAddress['country'])
 
-    def __init__(self, address_type=None, line1=None, line2=None, city=None, country=None):
+    def __init__(self, address_type=None, line1=None, line2=None, city=None,
+                 country=None):
         self.address_type = address_type
         self.line1 = line1
         self.line2 = line2
         self.city = city
         self.country = country
 
+
 class AddressList(list):
     pass
+
 
 class Person(object):
     implements(IPerson)
@@ -73,20 +90,27 @@ class Person(object):
         self.name = name
         self.address = address
 
+
 TESTDATA = Person(
-    name = u'MY NAME',
-    address = AddressList([
-        Address(address_type = u'Work',
-            line1 = u'My Office',
-            line2 = u'Big Office Block',
-            city = u'Mega City',
-            country = u'The Old Sod'),
-        Address(address_type = u'Home',
-            line1 = u'Home Sweet Home',
-            line2 = u'Easy Street',
-            city = u'Burbs',
-            country = u'The Old Sod')
-    ]))
+    name=u'MY NAME',
+    address=AddressList([
+        Address(
+            address_type=u'Work',
+            line1=u'My Office',
+            line2=u'Big Office Block',
+            city=u'Mega City',
+            country=u'The Old Sod'
+        ),
+        Address(
+            address_type=u'Home',
+            line1=u'Home Sweet Home',
+            line2=u'Easy Street',
+            city=u'Burbs',
+            country=u'The Old Sod'
+        )
+    ])
+)
+
 
 class GridDataConverter(grok.MultiAdapter, BaseDataConverter):
     """Convert between the AddressList object and the widget.
@@ -101,23 +125,23 @@ class GridDataConverter(grok.MultiAdapter, BaseDataConverter):
         rv = list()
         for row in value:
             d = dict()
-            for name, field in getFieldsInOrder(IAddress):
+            for name, f in getFieldsInOrder(IAddress):
                 d[name] = getattr(row, name)
             rv.append(d)
-
         return rv
 
     def toFieldValue(self, value):
         rv = AddressList()
         for row in value:
             d = dict()
-            for name, field in getFieldsInOrder(IAddress):
+            for name, f in getFieldsInOrder(IAddress):
                 if row.get(name, NO_VALUE) != NO_VALUE:
                     d[name] = row.get(name)
             rv.append(Address(**d))
         return rv
 
-#-------------[ Views Follow ]-------------------------------------------
+
+# -------------[ Views Follow ]-------------------------------------------
 
 class EditForm(form.EditForm):
     label = u'Simple Form (Objects)'
@@ -151,6 +175,7 @@ class EditForm(form.EditForm):
         super(EditForm, self).updateWidgets()
         self.widgets['address'].allow_reorder = True
 
+
 class EditForm2(EditForm):
     label = u'Hide the Row Manipulators (Objects)'
 
@@ -163,6 +188,7 @@ class EditForm2(EditForm):
         self.widgets['address'].allow_insert = False
         self.widgets['address'].allow_delete = False
 
+
 class EditForm3(EditForm):
     label = u'Disable Auto-append (Objects)'
 
@@ -174,6 +200,7 @@ class EditForm3(EditForm):
         super(EditForm3, self).updateWidgets()
         self.widgets['address'].auto_append = False
 
+
 class EditForm4(EditForm):
     label = u'Omit a column - Column is Mandatory (Objects)'
 
@@ -183,10 +210,14 @@ class EditForm4(EditForm):
 
     def updateWidgets(self):
         super(EditForm4, self).updateWidgets()
-        self.widgets['address'].columns = [c for c in self.widgets['address'].columns if c['name'] != 'country']
+        self.widgets['address'].columns = [
+            c for c in self.widgets['address'].columns
+            if c['name'] != 'country'
+        ]
 
     def datagridInitialise(self, subform, widget):
         subform.fields = subform.fields.omit('country')
+
 
 class EditForm4b(EditForm):
     label = u'Omit a column - Column is Optional (Objects)'
@@ -197,10 +228,14 @@ class EditForm4b(EditForm):
 
     def updateWidgets(self):
         super(EditForm4b, self).updateWidgets()
-        self.widgets['address'].columns = [c for c in self.widgets['address'].columns if c['name'] != 'line2']
+        self.widgets['address'].columns = [
+            c for c in self.widgets['address'].columns
+            if c['name'] != 'line2'
+        ]
 
     def datagridInitialise(self, subform, widget):
         subform.fields = subform.fields.omit('line2')
+
 
 class EditForm5(EditForm):
     label = u'Configure Subform Widgets (Objects)'
@@ -226,7 +261,8 @@ class EditForm6(EditForm):
     def updateWidgets(self):
         # This one hides the column title
         super(EditForm6, self).updateWidgets()
-        self.widgets['address'].columns[3]['mode']  = HIDDEN_MODE
+        self.widgets['address'].columns[3]['mode'] = HIDDEN_MODE
+
 
 class EditForm7(EditForm):
     label = u'Table is read-only, cells editable (Objects)'
@@ -236,6 +272,7 @@ class EditForm7(EditForm):
     def updateWidgets(self):
         super(EditForm7, self).updateWidgets()
         self.widgets['address'].mode = DISPLAY_MODE
+
 
 class EditForm8(EditForm):
     label = u'Table and cells are read-only (Objects)'
