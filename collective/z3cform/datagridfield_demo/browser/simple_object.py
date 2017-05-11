@@ -1,22 +1,25 @@
+# -*- coding: utf-8 -*-
 """
     Demo of the widget
 
     I haven't gotten these views working with tests.
 """
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import IDataGridField
 from five import grok
-
-from zope.interface import Interface, implements
-from zope import schema
-from zope.schema.fieldproperty import FieldProperty
-from zope.schema import getFieldsInOrder
-
-from z3c.form import field, button
-from z3c.form.interfaces import DISPLAY_MODE, HIDDEN_MODE, IDataConverter, NO_VALUE
-from z3c.form.converter import BaseDataConverter
-
 from plone.directives import form
-
-from collective.z3cform.datagridfield import DataGridFieldFactory, IDataGridField
+from z3c.form import button
+from z3c.form import field
+from z3c.form.converter import BaseDataConverter
+from z3c.form.interfaces import DISPLAY_MODE
+from z3c.form.interfaces import HIDDEN_MODE
+from z3c.form.interfaces import IDataConverter
+from z3c.form.interfaces import NO_VALUE
+from zope import schema
+from zope.interface import implements
+from zope.interface import Interface
+from zope.schema import getFieldsInOrder
+from zope.schema.fieldproperty import FieldProperty
 
 
 class IAddress(Interface):
@@ -245,5 +248,3 @@ class EditForm8(EditForm):
         for row in self.widgets['address'].widgets:
             for widget in row.subform.widgets.values():
                 widget.mode = DISPLAY_MODE
-
-

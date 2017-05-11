@@ -1,30 +1,31 @@
+# -*- coding: utf-8 -*-
 """
     Demo of the widget
 
     I haven't gotten these views working with tests.
 """
-from five import grok
-from datetime import datetime
-
-from zope.interface import Interface
-from zope import schema
-
-from z3c.form import field, button
-from z3c.form.interfaces import DISPLAY_MODE, HIDDEN_MODE
-
-from plone.directives import form
-
+from collective.z3cform.datagridfield import BlockDataGridFieldFactory
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
-from collective.z3cform.datagridfield import BlockDataGridFieldFactory
+from datetime import datetime
+from five import grok
+from plone.directives import form
+from z3c.form import button
+from z3c.form import field
+from z3c.form.interfaces import DISPLAY_MODE
+from z3c.form.interfaces import HIDDEN_MODE
+from zope import schema
+from zope.interface import Interface
+
+import z3c.form
+import zope.component
+import zope.interface
+import zope.schema
+
 
 #from z3c.relationfield.schema import RelationChoice
 #from plone.formwidget.contenttree import ObjPathSourceBinder
 
-import z3c.form
-import zope.schema
-import zope.interface
-import zope.component
 try:
     from collective.z3cform.datetimewidget import widget_datetime
 except:
@@ -264,4 +265,3 @@ class EditForm9(EditForm):
         # Set a custom widget for a field for this form instance only
         self.fields['address'].widgetFactory = BlockDataGridFieldFactory
         super(EditForm9, self).update()
-
