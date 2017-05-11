@@ -22,7 +22,7 @@ import z3c.form
 
 try:
     from collective.z3cform.datetimewidget import widget_datetime
-except:
+except ImportError:
     widget_datetime = None
 
 if widget_datetime is not None:
@@ -32,10 +32,12 @@ if widget_datetime is not None:
         # so we disable this for now
         show_jquerytools_dateinput = False
 
-
     def DataGridFieldDatetimeFieldWidget(field, request):
         """IFieldWidget factory for DatetimeWidget."""
-        return z3c.form.widget.FieldWidget(field, DataGridFieldDatetimeWidget(request))
+        return z3c.form.widget.FieldWidget(
+            field,
+            DataGridFieldDatetimeWidget(request)
+        )
 
 
 class IAddress(form.Schema):
