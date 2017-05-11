@@ -89,10 +89,10 @@ TESTDATA = Person(
     ]))
 
 class GridDataConverter(grok.MultiAdapter, BaseDataConverter):
-    """Convert between the AddressList object and the widget. 
+    """Convert between the AddressList object and the widget.
        If you are using objects, you must provide a custom converter
     """
-    
+
     grok.adapts(AddressListField, IDataGridField)
     grok.implements(IDataConverter)
 
