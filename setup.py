@@ -35,8 +35,6 @@ setup(
         'setuptools',
         # -*- Extra requirements: -*-
         'five.grok',
-        'plone.directives.form',
-        'plone.app.z3cform',
         'collective.z3cform.datagridfield',
     ],
     entry_points="""
